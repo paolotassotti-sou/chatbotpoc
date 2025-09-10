@@ -46,21 +46,15 @@ pip install -r requirements.txt
 
 ## Project Structure
 
-|-- ./pdf_to_text.py
-
-|-- ./injest.py
-
-|-- ./html_to_text.py
-
-|-- ./LICENSE
-
-|-- ./knowledge
-
-|-- ./embeddings
-
-|-- ./query.py
-
-|-- ./knowledge.py
-
-|-- ./requirements.txt
-
+```
+chatbotpoc/
+├── embeddings/
+│   ├── index.faiss
+│   └── index.pkl
+├── knowledge/
+├── injest.py
+├── knowledge.py
+├── query.py
+├── requirements.txt
+└── README.md
+```
