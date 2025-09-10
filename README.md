@@ -1,6 +1,3 @@
-# chatbotpoc
-simple chatbot in python relying on opensource LLM
-
 # ChatbotPOC
 
 A simple chatbot written in Python.
@@ -46,12 +43,17 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 
 
+## Project Structure
+
 chatbotpoc/
-│
-├─ knowledge.py       # Document ingestion, cleaning, splitting, and embeddings
-├─ query.py           # Main chatbot script
-├─ docs/              # Folder to store documents (txt, PDFs)
-├─ embeddings/        # Folder to store generated embeddings
-├─ requirements.txt
-└─ README.md
+├── embeddings/
+│ ├── index.faiss
+│ └── index.pkl
+├── knowledge/
+├── injest.py
+├── knowledge.py
+├── query.py
+├── requirements.txt
+└── README.md
+
 
