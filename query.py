@@ -4,67 +4,52 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 
-import os
 import sys
 import time
-
 
 print('Importing AI packages...', end='')
 sys.stdout.flush()
 
 import nltk
 import torch
-import pickle
 import numpy as np
 
-#nltk.download('punkt')
+# nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from sentence_transformers import CrossEncoder
 from langchain_community.vectorstores.utils import maximal_marginal_relevance
 
-
-from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
-
-
-
 print("done.")
-
 
 # Set device to MPS (Apple GPU) if available
 device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
-
 
 # Loading the knowledge base
 print('Loading the knowledge base...', end='')
 sys.stdout.flush()
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+# embedding model for consistency with knowledge.py
+embedding_model_name = "all-MiniLM-L6-v2"
+embeddings = HuggingFaceEmbeddings(model_name=embedding_model_name)
+
+# Load FAISS index + metadata (saved in knowledge.py)
+vectorstore = FAISS.load_local(
+    "embeddings/",
+    embeddings,
+    allow_dangerous_deserialization=True  # needed for pickle
+)
+
+# sentence transformer for cosine similarity filtering
+model = SentenceTransformer(embedding_model_name)
 model = model.to(device)
 
-
-# initialize cross encoder
+# initialize cross encoder for reranking
 reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-
-
-with open("metadata.pkl", "rb") as f:
-  metadata = pickle.load(f)
-
-
-# wrap metadata in Document objects
-docs = [Document(page_content=doc["text"], metadata=doc) for doc in metadata]
-
-# Wrap embedding model
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
-
-# Create FAISS vectorstore from documents (builds new index)
-vectorstore = FAISS.from_documents(docs, embeddings)
 
 # Get retriever
 retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 20})
@@ -88,7 +73,7 @@ def filter_by_cosine_similarity(query_text, retrieved_docs, model, threshold=0.6
     if sim >= threshold:
       filtered_docs.append(doc)
 
-    return filtered_docs
+  return filtered_docs
 
 
 def mmr_relevant_docs(text, top_k=10):
