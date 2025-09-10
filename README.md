@@ -45,15 +45,4 @@ pip install -r requirements.txt
 
 ## Project Structure
 
-chatbotpoc/
-├── embeddings/
-│ ├── index.faiss
-│ └── index.pkl
-├── knowledge/
-├── injest.py
-├── knowledge.py
-├── query.py
-├── requirements.txt
-└── README.md
-
-
+<pre> ```text chatbotpoc/ ├── embeddings/ │ ├── index.faiss │ └── index.pkl ├── knowledge/ │ └── Volleyball_Wikipedia.html ├── injest.py ├── knowledge.py ├── query.py ├── requirements.txt └── README.md ``` </pre>
