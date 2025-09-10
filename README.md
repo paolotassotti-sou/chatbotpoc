@@ -1,15 +1,13 @@
 # ChatbotPOC
 
-A simple chatbot written in Python.
-This is a basic POC that answers questions using a local knowledge base of documents and a generative language model.  
-It unfolds into two phases: knowledge-building and querying.
-In the first phase we build our knowledge base by embedding all the documents inside a given directory.
-These embedding are then stored into a local persistent vector database along with metadata.
-The querying phase implements a standard LLM pipeline to provide context-aware answers:
- - retrieve embeddings from the database
- - use a Maximum Marginal Relevant strategy to improve answer diversity
- - rerank retrieved documents based on the input query
- - build a prompt including a truncated context and chat history (only questions)
+A simple chatbot written in Python that answers questions using a local knowledge base of documents and a generative language model.  
+It is composed of two distinct phases:
+ - **Knowledge-Building**: It embeds all the documents inside a given directory. These embedding are then stored into a local persistent vector database along with metadata.
+ - **Querying**: The querying phase implements a standard LLM pipeline to provide context-aware answers:
+   * Retrieves embeddings from the database
+   * Uses a Maximum Marginal Relevant strategy to improve answer diversity
+   * Reranks retrieved documents based on the input query
+   * Builds a prompt including a truncated context and chat history (only questions)
 
 ---
 
