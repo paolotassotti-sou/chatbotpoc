@@ -25,7 +25,8 @@ The querying phase implements a standard LLM pipeline to provide context-aware a
 - Python 3.10+
 - Libraries:
   ```bash
-  pip install numpy pandas torch sentence-transformers langchain beautifulsoup4 requests tqdm
+  pip install torch transformers sentence-transformers langchain langchain-community faiss-cpu numpy nltk beautifulsoup4 lxml sentence-transformers
+
 
 
 ## Installation
@@ -46,12 +47,20 @@ pip install -r requirements.txt
 ## Project Structure
 
 |-- ./pdf_to_text.py
+
 |-- ./injest.py
+
 |-- ./html_to_text.py
+
 |-- ./LICENSE
+
 |-- ./knowledge
+
 |-- ./embeddings
+
 |-- ./query.py
+
 |-- ./knowledge.py
+
 |-- ./requirements.txt
 
