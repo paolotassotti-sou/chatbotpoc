@@ -56,3 +56,4 @@ chatbotpoc/
 ├── requirements.txt
 └── README.md
 ```
+At the time of writing the knowledge directory only has a sample wikipedia page about volleyball. It will be enriched shortly as new file type processing modules become available.
