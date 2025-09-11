@@ -4,6 +4,7 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 
+import re
 import sys
 import time
 
@@ -146,7 +147,8 @@ def generate_answer(question, gen_model, tokenizer, history_string=None, top_k=2
     retrieved_docs = rerank(retrieval_query, retrieved_docs, top_n=5)
 
     # Build context from reranked Document objects
-    context = "\n".join([f"- {doc.page_content}" for doc in retrieved_docs])
+    context = "\n".join([doc.page_content.lstrip("•- \n").strip() for doc in retrieved_docs])
+
 
 
     # truncating at sentence boundaries
@@ -208,6 +210,13 @@ def generate_answer(question, gen_model, tokenizer, history_string=None, top_k=2
     )
 
     answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    # Replace multiple dots with a single dot
+    answer = re.sub(r'\.{2,}', '.', answer)
+
+    # Optional: strip spaces around periods
+    answer = re.sub(r'\s*\.\s*', '. ', answer).strip()
+
     return answer
 
 
